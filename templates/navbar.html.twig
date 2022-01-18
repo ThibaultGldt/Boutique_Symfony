@@ -1,0 +1,44 @@
+{% block navbar %}
+    <nav class="navbar navbar-expand-md bg-dark fixed-top">
+        <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="{{ path('index') }}"><i class="fas fa-home"></i>{{ 'default.navbar.accueil' | trans}}</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('boutique') }}"><i class="fas fa-store"></i>{{ 'default.navbar.boutique' | trans}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('panier') }}"><i class="fas fa-shopping-cart "></i>{{ render(controller('App\\Controller\\DefaultController::navBar')) }}{{ 'default.navbar.panier' | trans}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('contact') }}"><i class="fas fa-comments "></i>{{ 'default.navbar.contact' | trans}}</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="get" name="search" action="{{ path('search') }}">
+                <input class="form-control mr-sm-2" type="text" name="_items">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+                    <i class="fas fa-search">
+                    </i>
+                </button>
+            </form>
+            <ul class="navbar-nav my-0">
+                <li class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ asset('images/' ~ app.request.attributes.get('_locale') ~ '.png') }}">
+                    </span>
+                    {% for locale in supported_locales|split('|') %}
+                        {% if app.request.attributes.get('_locale') != locale%}
+                            <div class="dropdown-menu" aria-labelledby="dropdown03" style="min-width: 5rem">
+                                {% set route = app.request.attributes.get('_route') %}
+                                {% set params = app.request.attributes.get('_route_params') %}
+                                <a class="dropdown-item" href="{{ path(route, params | merge({'_locale': locale })) }}">
+                                    <img src="{{ asset('images/' ~  locale ~ '.png') }}">
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if produits is defined %}
+        <div class="row">
+        <!--{% for produit in produits %} -->
+            <div class="card">
+                {{ produit.libelle }}
+                <img src="{{ asset(produit.visuel) }}">
+                {{ produit.texte }}
+                {{ produit.prix }}
+            </div>
+        <!--{% endfor %}-->
+        </div>
+    {% endif %}
+{% endblock %}
