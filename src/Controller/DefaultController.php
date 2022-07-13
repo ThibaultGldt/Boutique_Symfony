@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\LigneCommande;
+use App\Entity\Produit;
+use App\Service\DeviseService;
 use App\Service\PanierService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -36,4 +40,16 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    public function topVentes(){
+        $topVentes = $this->getDoctrine()->getManager()->getRepository(LigneCommande::class)->findTopVentes();
+
+        return $this->render('top_ventes.html.twig',[
+            'topVentes' => $topVentes,
+        ]);
+    }
+
+    public function devise(SessionInterface $session, String $devise){
+        $session->set('devise', $devise);
+
+    }
 }

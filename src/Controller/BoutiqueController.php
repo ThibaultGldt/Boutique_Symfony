@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use App\Service\BoutiqueService;
+use App\Entity\Categorie;
+use App\Entity\Produit;
+use App\Service\DeviseService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +16,25 @@ class BoutiqueController extends AbstractController
     /**
      * @Route("/boutique", requirements={"_locale":"%app.supported_locales%"})
      */
-    public function index(BoutiqueService $boutiqueService): Response
+    public function index(): Response
     {
-        $categories = $boutiqueService->findAllCategories();
+        //$categories = $boutiqueService->findAllCategories();
+        $categories = $this->getDoctrine()->getManager()
+            ->getRepository(Categorie::class)
+            ->findAll();
         return $this->render('boutique/boutique.html.twig', [
             'controller_name' => 'BoutiqueController',
             'categories' => $categories,
         ]);
     }
 
-    public function rayon(BoutiqueService $boutiqueService, int $idCategorie){
-        $categorie = $boutiqueService->findCategorieById($idCategorie);
-        $produits = $boutiqueService->findProduitsByCategorie($idCategorie);
+    public function rayon(int $idCategorie){
+        //$categorie = $boutiqueService->findCategorieById($idCategorie);
+        //$produits = $boutiqueService->findProduitsByCategorie($idCategorie);
+        $em = $this->getDoctrine()->getManager();
+        $categorie = $em->getRepository(Categorie::class)->find($idCategorie);
+        $produits = $categorie->getProducts();
+        //$produits = $em->getRepository(Produit::class)->findBy(["categorie"=>$categorie]);
         return $this->render('boutique/rayon.html.twig', [
             'controller_name' => 'BoutiqueController',
             'categorie' => $categorie,
@@ -36,13 +45,14 @@ class BoutiqueController extends AbstractController
     /**@Route ("/chercher", name="search")
      * @Template
      */
-    public function searchAction(BoutiqueService $boutiqueService, Request $request){
+    public function searchAction(Request $request){
         $libelle = $request->query->get('_items');
-        $produits = $boutiqueService->findProduitsByLibelleOrTexte($libelle);
+        $produits = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findBySearch($libelle);
 
         return $this->render('boutique/recherche.html.twig', [
             'controller_name' => 'BoutiqueController',
-            'produits' => $produits,
+            'resultat' => $produits,
+            'recherche' => $libelle,
         ]);
     }
 }

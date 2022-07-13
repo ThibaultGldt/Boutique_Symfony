@@ -1,0 +1,19 @@
+{# templates/email/recu.html.twig #}
+<h1>Bonjour {{ commande.usager.prenom }} {{ commande.usager.nom }} !</h1>
+<h2>Merci pour votre commande, voici le recu.</h2>
+<h3>Commande n°{{ commande.id }}</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+        </tr>
+    {% for ligne in commande.lignesCommande %}
+        <tr>
+            <th>{{ ligne.article.libelle }} x {{ ligne.quantite }}</th>
+            <th>{{ ligne.article.prix * ligne.quantite }}</th>
+        </tr>
+    {% endfor %}
+    </thead>
+</table>

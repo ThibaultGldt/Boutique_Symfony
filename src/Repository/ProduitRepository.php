@@ -47,4 +47,12 @@ class ProduitRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findBySearch($search){
+        return $this->createQueryBuilder('p')
+            ->where('p.libelle LIKE :s')
+            ->orWhere('p.texte LIKE :s')
+            ->setParameter('s', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

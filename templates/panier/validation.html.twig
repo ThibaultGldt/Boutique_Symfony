@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Récapitulatif Commande
+{% endblock %}
+{% block body %}
+ <div class="card col-md12">
+     <div class="card-header">
+         <h1>
+            <i class="fas fa-receipt">Commande N°{{ commande.id }}</i>
+         </h1>
+     </div>
+
+     <div class="card-body">
+        {% if commande is defined %}
+            <div class="row">
+                <table class="table table-stripped table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Produit</th>
+                            <th class="text-right">Prix</th>
+                            <th>Quantite</th>
+                            <th class="test-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ligne in commande.lignesCommande %}
+                        <tr>
+                            <td>
+                                <img class="card-img-produit" src="{{ asset(ligne.article.visuel) }}">
+                            </td>
+                            <td>
+                                {{ ligne.article.libelle }}
+                            </td>
+                            <td>
+                                {{ ligne.article.prix }}
+                            </td>
+                            <td>
+                                {{ ligne.quantite }}
+                            </td>
+                            <td>
+                                {{ ligne.article.prix * ligne.quantite }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Acheteur</th>
+                            <th>Date de la commande</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>{{ commande.usager.nom }} {{ commande.usager.prenom }}</th>
+                            <th>{{ commande.dateCommande|date('Y-m-d H:i:s') }}</th>
+                            <th>{{ commande.statut }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+         {% endif %}
+     </div>
+
+     <div class="card-footer">
+         <a class="btn btn-primary" href="{{ path('boutique') }}">Retour à la boutique</a>
+     </div>
+ </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% for ligne in topVentes %}
+    <a href="{{ path('rayon', {'idCategorie': ligne.article.categorie.id}) }}">
+        <li class="list-group-item text-center clickable">
+            <img src="{{ asset(ligne.article.visuel) }}" style="height: 40px;">
+            <p>
+                {{ ligne.article.libelle }}
+                <br>
+                <i>{{ ligne.article.prix }}</i>
+            </p>
+        </li>
+    </a>
+{% endfor %}

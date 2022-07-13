@@ -10,6 +10,7 @@
         </h1>
         <div class="col-md-12 btn-group btn-group-lg" role="group">
             <a class="btn btn-primary" href="{{ path('boutique') }}">Continuer mes achats</a>
+            <a class="btn btn-primary" href="{{ path('panier_validation') }}">Passer la commande</a>
         </div>
     </div>
     <div class="card-body">
@@ -33,7 +34,7 @@
                             <img class="card-img-produit" src="{{ asset(item['produit'].visuel) }}">
                         </td>
                         <td>
-                            <a href="{{ path('rayon', {'idCategorie': item['produit'].idCategorie}) }}">{{ item['produit'].libelle }}</a>
+                            <a href="{{ path('rayon', {'idCategorie': item['produit'].Categorie.id}) }}">{{ item['produit'].Categorie.libelle }}</a>
                         </td>
                         <td class="text-right">
                             {{ item['produit'].prix }}€

@@ -12,6 +12,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('contact') }}"><i class="fas fa-comments "></i>{{ 'default.navbar.contact' | trans}}</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                Mon Profil
+                            {% else %}
+                                S'authentifier
+                            {% endif %}
+                        </i>
+                    </span>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a class="dropdown-item" href="{{ path('usager_accueil') }}">Mon Compte</a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+                        {% else %}
+                        <a class="dropdown-item disabled" href="{{ path('usager_new') }}">Inscription</a>
+                        <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+                        {% endif %}
+                    </div>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" method="get" name="search" action="{{ path('search') }}">
                 <input class="form-control mr-sm-2" type="text" name="_items">
@@ -39,6 +59,7 @@
 
                 </li>
             </ul>
+
         </div>
     </nav>
 {% endblock %}

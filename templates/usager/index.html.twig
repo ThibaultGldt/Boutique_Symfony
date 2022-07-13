@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usager index{% endblock %}
+
+{% block body %}
+    <h1>Usager index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ usager.nom }}</td>
+                <td>{{ usager.prenom }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h1>Commandes</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th></th>
+                <th>Date</th>
+                <th></th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in usager.commandes %}
+                <tr>
+                    <th>{{ commande.id }}</th>
+                    <th></th>
+                    <th>{{ commande.dateCommande | date('Y-m-d H:i:s') }}</th>
+                    <th></th>
+                    <th>{{ commande.statut }}</th>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_logout') }}">Deconnexion</a>
+{% endblock %}

@@ -40,6 +40,11 @@ panier_vider:
     controller: App\Controller\PanierController::vider
     requirements:
         _locale: '%app.supported_locales%'
+panier_validation:
+    path: /{_locale}/panier/validation
+    controller: App\Controller\PanierController::validation
+    requirements:
+        _locale: '%app.supported_locales%'
 rayon:
     path: /{_locale}/boutique/rayon/{idCategorie}
     controller: App\Controller\BoutiqueController::rayon
@@ -48,5 +53,15 @@ rayon:
 search:
     path: /{_locale}/boutique/chercher
     controller: App\Controller\BoutiqueController::searchAction
+    requirements:
+        _locale: '%app.supported_locales%'
+usager_accueil:
+    path: /{_locale}/usager
+    controller: App\Controller\UsagerController::index
+    requirements:
+        _locale: '%app.supported_locales%'
+usager_new:
+    path: /{_locale}/inscription
+    controller: App\Controller\UsagerController::new
     requirements:
         _locale: '%app.supported_locales%'

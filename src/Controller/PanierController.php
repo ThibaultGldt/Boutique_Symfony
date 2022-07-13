@@ -2,9 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Usager;
+use App\Repository\UsagerRepository;
+use App\Service\MailService;
 use App\Service\PanierService;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PanierController extends AbstractController
@@ -46,5 +53,16 @@ class PanierController extends AbstractController
     {
         $panierService->vider();
         return $this->redirectToRoute('panier');
+    }
+
+    public function validation(PanierService $panierService, MailService $mailService, EntityManagerInterface $entityManager):Response
+    {
+        $user = $this->getUser();
+        $commande = $panierService->panierToCommande($user);
+        $mailService->sendEmail( $commande);
+
+        return $this->render('panier/validation.html.twig', [
+            'commande' => $commande
+        ]);
     }
 }

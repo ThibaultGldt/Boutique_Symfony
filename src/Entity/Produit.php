@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,7 +28,7 @@ class Produit
      * @ORM\Column(type="string", length=255)
      */
     private $visuel;
-
+g
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -42,6 +44,16 @@ class Produit
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LigneCommande::class, mappedBy="article", orphanRemoval=true)
+     */
+    private $lignesCommandes;
+
+    public function __construct()
+    {
+        $this->lignesCommandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -72,7 +84,7 @@ class Produit
         return $this;
     }
 
-    public function get=Texte(): ?string
+    public function getTexte(): ?string
     {
         return $this->texte;
     }
@@ -104,6 +116,36 @@ class Produit
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LigneCommande[]
+     */
+    public function getLignesCommandes(): Collection
+    {
+        return $this->lignesCommandes;
+    }
+
+    public function addLignesCommande(LigneCommande $lignesCommande): self
+    {
+        if (!$this->lignesCommandes->contains($lignesCommande)) {
+            $this->lignesCommandes[] = $lignesCommande;
+            $lignesCommande->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignesCommande(LigneCommande $lignesCommande): self
+    {
+        if ($this->lignesCommandes->removeElement($lignesCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($lignesCommande->getArticle() === $this) {
+                $lignesCommande->setArticle(null);
+            }
+        }
 
         return $this;
     }
