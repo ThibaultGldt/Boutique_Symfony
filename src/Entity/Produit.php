@@ -28,7 +28,7 @@ class Produit
      * @ORM\Column(type="string", length=255)
      */
     private $visuel;
-g
+
     /**
      * @ORM\Column(type="string", length=255)
      */
